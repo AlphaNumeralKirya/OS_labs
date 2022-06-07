@@ -9,9 +9,9 @@ int main(int argc, char* argv[])
 {
 	setlocale(LC_ALL, "rus");
 	int ms = atoi(argv[1]);
-	HANDLE semaphore = OpenSemaphore(SEMAPHORE_ALL_ACCESS, FALSE, L"S");
-	HANDLE C = OpenEvent(EVENT_ALL_ACCESS, FALSE, L"C");
-	HANDLE D = OpenEvent(EVENT_ALL_ACCESS, FALSE, L"D");
+	HANDLE semaphore = OpenSemaphore(SEMAPHORE_ALL_ACCESS, FALSE, (LPSTR)"S");
+	HANDLE C = OpenEvent(EVENT_ALL_ACCESS, FALSE, (LPSTR)"C");
+	HANDLE D = OpenEvent(EVENT_ALL_ACCESS, FALSE, (LPSTR)"D");
 	cout << "Process is waiting" << endl;
 	WaitForSingleObject(semaphore, INFINITE);
 	system("cls");

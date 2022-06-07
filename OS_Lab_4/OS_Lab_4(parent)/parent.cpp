@@ -10,9 +10,9 @@ int main(int argc, char* argv[])
 	setlocale(LC_ALL, "rus");
 	int ms = atoi(argv[1]);
 	cout << "Process is waiting" << endl;
-	HANDLE hMutex = OpenMutex(MUTEX_ALL_ACCESS, FALSE, L"hM");
-	HANDLE A = OpenEvent(EVENT_ALL_ACCESS, FALSE, L"A");
-	HANDLE B = OpenEvent(EVENT_ALL_ACCESS, FALSE, L"B");
+	HANDLE hMutex = OpenMutex(MUTEX_ALL_ACCESS, FALSE, (LPSTR)"hM");
+	HANDLE A = OpenEvent(EVENT_ALL_ACCESS, FALSE, (LPSTR)"A");
+	HANDLE B = OpenEvent(EVENT_ALL_ACCESS, FALSE, (LPSTR)"B");
 	Sleep(10);
 	WaitForSingleObject(hMutex, INFINITE);
 	system("cls");

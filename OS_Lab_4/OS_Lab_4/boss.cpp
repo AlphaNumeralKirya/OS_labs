@@ -1,6 +1,7 @@
 #include <iostream>
 #include<stdio.h>
 #include<string.h>
+#include <string>
 #include <windows.h>
 #include <tchar.h>
 #include <conio.h>
@@ -8,7 +9,7 @@
 using namespace std;
 int main()
 {
-	HANDLE hMutex = CreateMutex(NULL, FALSE, L"hM");
+	HANDLE hMutex = CreateMutex(NULL, FALSE, (LPSTR)"hM");
 	if (hMutex == NULL)
 	{
 		cout << "Create mutex failed." << endl;
@@ -16,13 +17,11 @@ int main()
 		cin.get();
 		return GetLastError();
 	}
-	HANDLE A = CreateEvent(NULL, FALSE, FALSE, L"A");
-	HANDLE B = CreateEvent(NULL, FALSE, FALSE, L"B");
-	HANDLE C = CreateEvent(NULL, FALSE, FALSE, L"C");
-	HANDLE D = CreateEvent(NULL, FALSE, FALSE, L"D");
+	HANDLE A = CreateEvent(NULL, FALSE, FALSE, (LPSTR)"A");
+	HANDLE B = CreateEvent(NULL, FALSE, FALSE, (LPSTR)"B");
+	HANDLE C = CreateEvent(NULL, FALSE, FALSE, (LPSTR)"C");
+	HANDLE D = CreateEvent(NULL, FALSE, FALSE, (LPSTR)"D");
 	setlocale(LC_ALL, "rus");
-	TCHAR lpszCommandLine1[256] = L"parent.exe";
-	TCHAR lpszCommandLine2[256] = L"child.exe";
 	STARTUPINFO si;
 	ZeroMemory(&si, sizeof(STARTUPINFO));
 	int ps, cs, ms;
@@ -32,16 +31,22 @@ int main()
 	cin >> cs;
 	cout << " оличество сообщений, прин€тых от Parent или Child" << endl;
 	cin >> ms;
-	HANDLE semaphore = CreateSemaphore(NULL, 2, 2, L"S");
+	HANDLE semaphore = CreateSemaphore(NULL, 2, 2, "S");
 	PROCESS_INFORMATION* piApp = new PROCESS_INFORMATION[ps + cs];
 	HANDLE* piH = new HANDLE[ps + cs];
 	int pi = 0;
-	TCHAR buf[300];
-	_stprintf(buf, TEXT(" %d"), ms);
-	_tcscat(lpszCommandLine1, buf);
-	_tcscat(lpszCommandLine2, buf);
+	string cmd_args1 = "C:\\Users\\kirya\\source\\repos\\OS_Lab_4\\Debug\\OS_Lab_4(parent).exe";
+	string cmd_args2 = "C:\\Users\\kirya\\source\\repos\\OS_Lab_4\\Debug\\OS_Lab_4(child).exe";
+	cmd_args1 += " ";
+
+	cmd_args1 += to_string(ms);
+	cmd_args2 += " ";
+	cmd_args2 += to_string(ms);
+	char* lpszCommandLine1 = (char*)cmd_args1.c_str();
+	char* lpszCommandLine2 = (char*)cmd_args2.c_str();
+	//cout<<
 	for (int i = 0; i < ps; i++) {
-		if (!CreateProcess(NULL, lpszCommandLine1, NULL, NULL, FALSE,
+		if (!CreateProcess(NULL, (LPSTR)lpszCommandLine1, NULL, NULL, FALSE,
 			CREATE_NEW_CONSOLE, NULL, NULL, &si, &piApp[pi]))
 		{
 			_cputs("The new process is not created.\n");
@@ -54,7 +59,7 @@ int main()
 		pi++;
 	}
 	for (int i = 0; i < cs; i++) {
-		if (!CreateProcess(NULL, lpszCommandLine2, NULL, NULL, FALSE,
+		if (!CreateProcess(NULL, (LPSTR)lpszCommandLine2, NULL, NULL, FALSE,
 			CREATE_NEW_CONSOLE, NULL, NULL, &si, &piApp[pi]))
 		{
 			_cputs("The new process is not created.\n");
