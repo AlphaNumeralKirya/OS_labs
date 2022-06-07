@@ -17,7 +17,7 @@ int ttime;
 DWORD WINAPI Work(LPVOID par)
 {
 	EnterCriticalSection(&cs);
-	cout << "Введите временной интервал, требуемый для отдых" << endl;
+	cout << "Введите временной интервал, требуемый для отдыхa " << endl;
 	cin >> ttime;
 	bool key = false;
 	int rs = 0;
@@ -49,9 +49,9 @@ DWORD WINAPI Work(LPVOID par)
 		}
 		if (rs == k && r) {
 			r = false;
-			LeaveCriticalSection(&cs);
+			//LeaveCriticalSection(&cs);
 			Sleep(100);
-			EnterCriticalSection(&cs);
+			//EnterCriticalSection(&cs);
 		}
 	}
 	LeaveCriticalSection(&cs);
@@ -90,27 +90,31 @@ int main()
 	}
 
 
+
 	work = CreateThread(NULL, 0, Work, NULL, CREATE_SUSPENDED, &IDwork);
 	if (work == NULL) return GetLastError();
 	hOutEvent = CreateEvent(NULL, FALSE, FALSE, NULL);
 	if (hOutEvent == NULL)
 		return GetLastError();
-	sumElement = CreateThread(NULL, 0, SumElement, NULL, CREATE_SUSPENDED, &IDs);
-	if (sumElement == NULL) return GetLastError();
+	
 	cout << endl;
 	cout << "Bведите k" << endl;
 	cin >> k;
 	ResumeThread(work);
-	Sleep(5);
+	sumElement = CreateThread(NULL, 0, SumElement, NULL, NULL, &IDs);
+	if (sumElement == NULL) return GetLastError();
+
+	Sleep(100);
 	EnterCriticalSection(&cs);
-	ResumeThread(sumElement);
-	SetEvent(hOutEvent);
+	//ResumeThread(sumElement);
+
 	cout << "Промежуточный вывод " << endl;
 	for (int i = 0; i < ssize; i++) {
 		cout << mas[i] << " ";
 	}
 	cout << endl;
 	LeaveCriticalSection(&cs);
+	SetEvent(hOutEvent); 
 	EnterCriticalSection(&cs2);
 	cout << "результат работы потока SumElement: sum = " << sum << endl;
 	LeaveCriticalSection(&cs2);
