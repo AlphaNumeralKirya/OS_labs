@@ -34,16 +34,18 @@ int main() {
 	}
 
 	wstring stemp = wstring(cmd_args.begin(), cmd_args.end());
-
-	LPCTSTR lpszAppName = "child.exe";
+	//cout << 
+	LPCTSTR lpszAppName = "C:\\Users\\kirya\\source\\repos\\OS_LAB_2\\Debug\\OS2_child.exe";
 	STARTUPINFO si;
 	PROCESS_INFORMATION piApp;
 	ZeroMemory(&si, sizeof(STARTUPINFO));
 	si.cb = sizeof(STARTUPINFO);
 	si.dwFlags = STARTF_USEPOSITION;
 	si.dwX = x;
-
-	if (!CreateProcess(lpszAppName, (LPSTR)&stemp[0], NULL, NULL, FALSE,
+	cout << cmd_args;
+	char* m;
+	m =(char*) cmd_args.c_str();
+	if (!CreateProcess(lpszAppName, (LPSTR)m, NULL, NULL, FALSE,
 		CREATE_NEW_CONSOLE, NULL, NULL, &si, &piApp))
 	{
 		cout << "New process is not created" << endl;
